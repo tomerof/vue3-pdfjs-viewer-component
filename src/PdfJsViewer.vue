@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, watch, defineExpose } from 'vue'
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 
 // Ensure bundlers include the entire PDF.js viewer folder when packaging this component.
 // Vite supports import.meta.glob; for other bundlers this is a no-op.
@@ -69,7 +69,7 @@ const emit = defineEmits<{
 }>()
 
 const iframeRef = ref<HTMLIFrameElement | null>(null)
-let viewerTab: (Window & typeof globalThis) | null | undefined
+let viewerTab: Window | null = null
 const hasSrc = ref(!!(typeof window !== 'undefined' ? (typeof props.pdfSrc !== 'undefined' && props.pdfSrc !== null) : false))
 
 function getPDFViewerApplicationOptions(): any | null {
@@ -170,7 +170,10 @@ function buildViewerUrl(): string | null {
   if (typeof Blob !== 'undefined' && _src instanceof Blob) {
     fileUrl = encodeURIComponent(URL.createObjectURL(_src))
   } else if (typeof Uint8Array !== 'undefined' && _src instanceof Uint8Array) {
-    const blob = new Blob([_src], { type: 'application/pdf' })
+    // Create a true ArrayBuffer to satisfy BlobPart typing (avoids SharedArrayBuffer/ArrayBufferLike issues)
+    const ab = new ArrayBuffer(_src.byteLength)
+    new Uint8Array(ab).set(_src)
+    const blob = new Blob([ab], { type: 'application/pdf' })
     fileUrl = encodeURIComponent(URL.createObjectURL(blob))
   } else if (typeof _src === 'string') {
     fileUrl = _src
@@ -183,10 +186,8 @@ function buildViewerUrl(): string | null {
   viewerUrl += `?file=${fileUrl}`
 
   if (props.viewerId !== undefined) viewerUrl += `&viewerId=${props.viewerId}`
-  if (emit) {
-    // Signal supported events (parity with Angular building query flags)
-    viewerUrl += `&beforePrint=true&afterPrint=true&pagesLoaded=true&pageChange=true`
-  }
+  // Signal supported events (parity with Angular building query flags)
+  viewerUrl += `&beforePrint=true&afterPrint=true&pagesLoaded=true&pageChange=true`
   if (props.downloadFileName) {
     const name = props.downloadFileName.endsWith('.pdf') ? props.downloadFileName : `${props.downloadFileName}.pdf`
     viewerUrl += `&fileName=${name}`
