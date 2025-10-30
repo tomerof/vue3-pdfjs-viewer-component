@@ -183,6 +183,12 @@ function buildViewerUrl(): string | null {
 
   function resolveDefaultViewerHtml(): string {
     // Try to let the bundler give us a real URL (preferred for Vite/Rollup)
+    // First, force file emission with the `?url` suffix (Vite/Rollup convention)
+    try {
+      const forced = new URL('../assets/pdfjs/web/viewer.html?url', import.meta.url).toString()
+      if (!forced.startsWith('data:')) return forced
+    } catch {}
+    // Then try without the suffix (works in some setups)
     try {
       const resolved = new URL('../assets/pdfjs/web/viewer.html', import.meta.url).toString()
       // Some bundlers inline small assets into data URLs. PDF.js viewer cannot be a data URL

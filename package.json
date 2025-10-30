@@ -44,7 +44,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "build:example": "vite build --config example/vite.config.ts",
     "preview:example": "vite preview --config example/vite.config.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "node scripts/postinstall-copy.js || true"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.2",
