@@ -1,0 +1,75 @@
+# Node dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing & coverage
+coverage/
+.nyc_output/
+
+# Build outputs
+/dist/
+/dist-ssr/
+/build/
+.tmp/
+/tmp/
+/temp/
+
+# Example app build & deps
+/example/dist/
+/example/.vite/
+/example/node_modules/
+
+# Vite
+.vite/
+# Occasionally generated assets
+vite.svg
+
+# TypeScript
+*.tsbuildinfo
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Editors & IDEs
+.idea/
+.vscode/
+# Editor swap/backup files
+*.swp
+*.swo
+*.orig
+*.rej
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Lock files (prefer a single tool; ignore others here)
+bun.lock*
+yarn.lock
+pnpm-lock.yaml
+
+# Lint caches
+.eslintcache
+.stylelintcache
+
+# Misc
+*.local

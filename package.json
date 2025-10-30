@@ -1,0 +1,56 @@
+{
+  "name": "vue3-pdfjs-viewer",
+  "version": "0.1.0",
+  "description": "A Vue 3 (Composition API + TypeScript) wrapper around PDF.js viewer, ported from ng2-pdfjs-viewer and fully self-contained.",
+  "type": "module",
+  "main": "dist/index.es.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.es.js"
+    }
+  },
+  "files": [
+    "dist",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "peerDependencies": {
+    "vue": ">=3.2.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vue3",
+    "pdf",
+    "pdf.js",
+    "viewer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/your-repo.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev:example": "vite --config example/vite.config.ts",
+    "build": "vite build && npm run build:types && node scripts/copy-assets.js",
+    "build:types": "vue-tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "build:example": "vite build --config example/vite.config.ts",
+    "preview:example": "vite preview --config example/vite.config.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
+    "vue": "^3.5.12",
+    "vue-tsc": "^2.1.6"
+  }
+}
