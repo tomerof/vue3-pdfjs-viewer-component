@@ -1,6 +1,6 @@
 {
   "name": "vue3-pdf-viewer-component",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Vue 3 (Composition API + TypeScript) wrapper around PDF.js viewer, ported from ng2-pdfjs-viewer and fully self-contained.",
   "type": "module",
   "main": "dist/index.es.js",
