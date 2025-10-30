@@ -43,6 +43,7 @@ function goTo(n: number) {
         :open-file="true"
         :download="false"
         :print="false"
+        viewer-folder="/pdfjs"
         @on-before-print="() => console.log('before print')"
         @on-after-print="() => console.log('after print')"
         @on-document-load="(e) => console.log('pages loaded', e)"

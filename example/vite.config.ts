@@ -6,7 +6,7 @@ import { resolve } from 'path'
 export default defineConfig({
   root: __dirname,
   plugins: [vue()],
-  // Serve the library's assets folder at /assets for dev and include it in the example build
+  // Serve the library's assets folder at the web root for dev and include it in the example build (so viewer is at /pdfjs/web/viewer.html)
   publicDir: resolve(__dirname, '..', 'assets'),
   resolve: {
     alias: {

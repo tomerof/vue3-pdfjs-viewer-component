@@ -4,7 +4,7 @@ import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 // Ensure bundlers include the entire PDF.js viewer folder when packaging this component.
 // Vite supports import.meta.glob; for other bundlers this is a no-op.
 try {
-  (import.meta as any).glob?.('../assets/pdfjs/**', { eager: true, as: 'url' })
+  (import.meta as any).glob?.('../pdfjs/**', { eager: true, as: 'url' })
 } catch {}
 
 // Props mirroring Angular inputs
@@ -185,12 +185,12 @@ function buildViewerUrl(): string | null {
     // Try to let the bundler give us a real URL (preferred for Vite/Rollup)
     // First, force file emission with the `?url` suffix (Vite/Rollup convention)
     try {
-      const forced = new URL('../assets/pdfjs/web/viewer.html?url', import.meta.url).toString()
+      const forced = new URL('../pdfjs/web/viewer.html?url', import.meta.url).toString()
       if (!forced.startsWith('data:')) return forced
     } catch {}
     // Then try without the suffix (works in some setups)
     try {
-      const resolved = new URL('../assets/pdfjs/web/viewer.html', import.meta.url).toString()
+      const resolved = new URL('../pdfjs/web/viewer.html', import.meta.url).toString()
       // Some bundlers inline small assets into data URLs. PDF.js viewer cannot be a data URL
       // because it loads other relative assets (JS/CSS) which would fail to resolve from data:.
       if (!resolved.startsWith('data:')) return resolved
@@ -200,8 +200,8 @@ function buildViewerUrl(): string | null {
     //    window.__PDFJS_VIEWER_BASE_URL__ = '/some/public/path/to/pdfjs'
     const globalBase = (typeof window !== 'undefined' && (window as any).__PDFJS_VIEWER_BASE_URL__)
     if (globalBase) return `${globalBase.replace(/\/$/, '')}/web/viewer.html`
-    // 2) Default to `/assets/pdfjs/web/viewer.html` assuming assets are served from /assets
-    return '/assets/pdfjs/web/viewer.html'
+    // 2) Default to `/pdfjs/web/viewer.html` assuming assets are served from the app's public root
+    return '/pdfjs/web/viewer.html'
   }
   const defaultViewerHtml = resolveDefaultViewerHtml()
   let viewerUrl = props.viewerFolder ? `${props.viewerFolder}/web/viewer.html` : defaultViewerHtml

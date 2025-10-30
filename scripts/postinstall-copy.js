@@ -1,5 +1,5 @@
 // Postinstall helper to copy the packaged pdfjs assets into the host app's public folder
-// This aims to make the default fallback URL (/assets/pdfjs/web/viewer.html) work out of the box.
+// This aims to make the default fallback URL (/pdfjs/web/viewer.html) work out of the box.
 // It is best-effort: if no conventional public folder is found, we do nothing and print a hint.
 
 import { cp, mkdir, stat } from 'node:fs/promises'
@@ -31,21 +31,23 @@ async function main() {
   hostRoot = resolve(hostRoot, '..') // -> <app>
 
   const candidates = [
-    resolve(hostRoot, 'public', 'assets', 'pdfjs'),
     resolve(hostRoot, 'public', 'pdfjs'),
-    resolve(hostRoot, 'static', 'assets', 'pdfjs'),
     resolve(hostRoot, 'static', 'pdfjs'),
   ]
 
   let target = null
-  // Prefer existing public dir, otherwise create public/assets/pdfjs
-  if (await exists(resolve(hostRoot, 'public'))) {
-    target = resolve(hostRoot, 'public', 'assets', 'pdfjs')
+  // Prefer existing src/public or public dir, otherwise create public/pdfjs
+  if (await exists(resolve(hostRoot, 'src', 'public'))) {
+    target = resolve(hostRoot, 'src', 'public', 'pdfjs')
+  } else if (await exists(resolve(hostRoot, 'public'))) {
+    target = resolve(hostRoot, 'public', 'pdfjs')
+  } else if (await exists(resolve(hostRoot, 'src', 'static'))) {
+    target = resolve(hostRoot, 'src', 'static', 'pdfjs')
   } else if (await exists(resolve(hostRoot, 'static'))) {
-    target = resolve(hostRoot, 'static', 'assets', 'pdfjs')
+    target = resolve(hostRoot, 'static', 'pdfjs')
   } else {
-    // As a last resort, use public/assets/pdfjs and create it
-    target = resolve(hostRoot, 'public', 'assets', 'pdfjs')
+    // As a last resort, use public/pdfjs and create it
+    target = resolve(hostRoot, 'public', 'pdfjs')
   }
 
   await mkdir(target, { recursive: true })

@@ -4,7 +4,7 @@ This is a Vue 3 Composition API + TypeScript port of the Angular `ng2-pdfjs-view
 
 Notes:
 - Standalone: The PDF.js viewer and all required assets are vendored into this package under `assets/pdfjs`. No external setup is required.
-- Default viewer URL is resolved from the package itself using `new URL('../assets/pdfjs/web/viewer.html', import.meta.url)`.
+- Default viewer URL is resolved from the package itself using `new URL('../assets/pdfjs/web/viewer.html', import.meta.url)`, but if a data: URL is detected it falls back to the public path `/pdfjs/web/viewer.html`.
 - You can still override via the `viewerFolder` prop if you want to host your own copy of the viewer (must point at a folder that contains `web/viewer.html`).
 - Supports rendering in an embedded iframe or in a new external window/tab (`externalWindow = true`).
 - Listens to messages from the PDF.js viewer and emits the same events: `onBeforePrint`, `onAfterPrint`, `onDocumentLoad`, `onPageChange`.
@@ -50,14 +50,14 @@ How dependencies are loaded
 - The component resolves the viewer URL at runtime with `new URL('../assets/pdfjs/web/viewer.html?url', import.meta.url)` (for Vite/Rollup this forces emitting a file URL). If that still yields a `data:` URL, it falls back to a public path as described below.
 - For Vite and similar bundlers, we also reference all files under `assets/pdfjs/**` so they are copied to the final build output.
 - Some build tools inline small assets as `data:` URLs. The PDF.js viewer cannot be loaded from a `data:` URL because it needs to fetch other relative JS/CSS files. To avoid this, the component now falls back to a file URL when it detects a `data:` URL.
-  - Preferred: pass `viewerFolder` to point to a publicly served copy of the `pdfjs` folder (must contain `web/viewer.html`). Example: `viewerFolder="/assets/pdfjs"`.
-  - Alternative: set a global before mounting your Vue app: `window.__PDFJS_VIEWER_BASE_URL__ = '/assets/pdfjs'`.
-  - If neither is set, the component will try `/assets/pdfjs/web/viewer.html` by default.
-- Automatic copy for consumers: on install, this package runs a small postinstall script that attempts to copy `assets/pdfjs` into your app’s `public/assets/pdfjs` (or `static/assets/pdfjs`) if such a folder exists or can be created. This makes `/assets/pdfjs/web/viewer.html` available in both development and production without extra setup. If you prefer a different location, use the `viewerFolder` prop or the global base variable.
-- If your bundler does not support `import.meta.url` asset URLs, set the `viewerFolder` prop to a publicly served path where you host the `pdfjs` folder (e.g. place `assets/pdfjs` into your app's `public/` and use `viewerFolder="/assets/pdfjs"`).
+  - Preferred: pass `viewerFolder` to point to a publicly served copy of the `pdfjs` folder (must contain `web/viewer.html`). Example: `viewerFolder="/pdfjs"`.
+  - Alternative: set a global before mounting your Vue app: `window.__PDFJS_VIEWER_BASE_URL__ = '/pdfjs'`.
+  - If neither is set, the component will try `/pdfjs/web/viewer.html` by default.
+- Automatic copy for consumers: on install, this package runs a small postinstall script that attempts to copy `assets/pdfjs` into your app’s `public/pdfjs` (or `src/public/pdfjs`, or `static/pdfjs`) if such a folder exists or can be created. This makes `/pdfjs/web/viewer.html` available in both development and production without extra setup. If you prefer a different location, use the `viewerFolder` prop or the global base variable.
+- If your bundler does not support `import.meta.url` asset URLs, set the `viewerFolder` prop to a publicly served path where you host the `pdfjs` folder (e.g. copy `assets/pdfjs` into your app's `public/` and use `viewerFolder="/pdfjs"`).
 
 Dev example
-- The example app serves the library’s `assets` folder at `/assets` via Vite `publicDir`, so the viewer is available at `/assets/pdfjs/web/viewer.html` during dev and in the built example.
+- The example app serves the library’s `assets` folder at the web root via Vite `publicDir`, so the viewer is available at `/pdfjs/web/viewer.html` during dev and in the built example.
 
 Try the example locally
 - We include a Vite example under `example/`.
