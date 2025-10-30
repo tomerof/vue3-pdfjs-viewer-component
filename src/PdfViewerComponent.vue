@@ -181,7 +181,23 @@ function buildViewerUrl(): string | null {
     return null
   }
 
-  const defaultViewerHtml = new URL('../assets/pdfjs/web/viewer.html', import.meta.url).toString()
+  function resolveDefaultViewerHtml(): string {
+    // Try to let the bundler give us a real URL (preferred for Vite/Rollup)
+    try {
+      const resolved = new URL('../assets/pdfjs/web/viewer.html', import.meta.url).toString()
+      // Some bundlers inline small assets into data URLs. PDF.js viewer cannot be a data URL
+      // because it loads other relative assets (JS/CSS) which would fail to resolve from data:.
+      if (!resolved.startsWith('data:')) return resolved
+    } catch {}
+    // Fallbacks:
+    // 1) Allow host app to provide a base folder globally (before Vue app mounts):
+    //    window.__PDFJS_VIEWER_BASE_URL__ = '/some/public/path/to/pdfjs'
+    const globalBase = (typeof window !== 'undefined' && (window as any).__PDFJS_VIEWER_BASE_URL__)
+    if (globalBase) return `${globalBase.replace(/\/$/, '')}/web/viewer.html`
+    // 2) Default to `/assets/pdfjs/web/viewer.html` assuming assets are served from /assets
+    return '/assets/pdfjs/web/viewer.html'
+  }
+  const defaultViewerHtml = resolveDefaultViewerHtml()
   let viewerUrl = props.viewerFolder ? `${props.viewerFolder}/web/viewer.html` : defaultViewerHtml
   viewerUrl += `?file=${fileUrl}`
 

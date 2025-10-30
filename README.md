@@ -16,9 +16,9 @@ Usage example:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import PdfJsViewerComponent from 'vue3-pdf-viewer-component'
+import PdfViewerComponent from 'vue3-pdf-viewer-component'
 
-const pdfRef = ref<InstanceType<typeof PdfJsViewerComponent> | null>(null)
+const pdfRef = ref<InstanceType<typeof PdfViewerComponent> | null>(null)
 
 function openPdf() {
   pdfRef.value?.setPdfSrc('/assets/sample.pdf')
@@ -28,7 +28,7 @@ function openPdf() {
 
 <template>
   <div style="height: 80vh;">
-    <PdfJsViewerComponent
+    <PdfViewerComponent
       ref="pdfRef"
       :viewer-id="'main'"
       :pdf-src="null"
@@ -49,6 +49,10 @@ How dependencies are loaded
 - The PDF.js viewer assets are included in this package under `assets/pdfjs`.
 - The component resolves the viewer URL at runtime with `new URL('../assets/pdfjs/web/viewer.html', import.meta.url)` so you don't need to copy anything into your app.
 - For Vite and similar bundlers, we also reference all files under `assets/pdfjs/**` so they are copied to the final build output.
+- Some build tools inline small assets as `data:` URLs. The PDF.js viewer cannot be loaded from a `data:` URL because it needs to fetch other relative JS/CSS files. To avoid this, the component now falls back to a file URL when it detects a `data:` URL.
+  - Preferred: pass `viewerFolder` to point to a publicly served copy of the `pdfjs` folder (must contain `web/viewer.html`). Example: `viewerFolder="/assets/pdfjs"`.
+  - Alternative: set a global before mounting your Vue app: `window.__PDFJS_VIEWER_BASE_URL__ = '/assets/pdfjs'`.
+  - If neither is set, the component will try `/assets/pdfjs/web/viewer.html` by default.
 - If your bundler does not support `import.meta.url` asset URLs, set the `viewerFolder` prop to a publicly served path where you host the `pdfjs` folder (e.g. place `assets/pdfjs` into your app's `public/` and use `viewerFolder="/assets/pdfjs"`).
 
 Try the example locally
@@ -66,7 +70,7 @@ Publish to npm
 - Set the desired package name and version in `package.json`.
 - Ensure you are logged in: `npm login`.
 - Build and publish: `npm run build && npm publish --access public`.
-- Consumers can then `npm i vue3-pdf-viewer-component` and `import PdfJsViewerComponent from 'vue3-pdf-viewer-component'`.
+- Consumers can then `npm i vue3-pdf-viewer-component` and `import PdfViewerComponent from 'vue3-pdf-viewer-component'`.
 
 Props mirror the Angular inputs:
 - viewerId, viewerFolder, externalWindow, showSpinner, downloadFileName, openFile, download, startDownload, viewBookmark, print, startPrint, fullScreen, find, zoom, nameddest, pagemode, lastPage, rotatecw, rotateccw, cursor, scroll, spread, locale, useOnlyCssZoom, errorOverride, errorAppend, errorMessage, diagnosticLogs, externalWindowOptions, page, pdfSrc.
