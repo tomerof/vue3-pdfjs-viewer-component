@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PdfJsViewer from 'vue3-pdfjs-viewer'
+import PdfJsViewer from 'vue3-pdf-viewer-component'
 
 const pdfRef = ref<InstanceType<typeof PdfJsViewer> | null>(null)
 const sampleUrl = ref('https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf')
@@ -18,7 +18,7 @@ function goTo(n: number) {
 
 <template>
   <div class="wrap">
-    <h1>vue3-pdfjs-viewer — Example</h1>
+    <h1>vue3-pdf-viewer-component — Example</h1>
 
     <p>
       This demo loads a public sample PDF. Click "Open PDF" to inject the URL

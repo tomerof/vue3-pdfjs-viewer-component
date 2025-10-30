@@ -9,7 +9,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // During local development, import the library source directly
-      'vue3-pdfjs-viewer': resolve(__dirname, '..', 'index.ts'),
+      'vue3-pdf-viewer-component': resolve(__dirname, '..', 'index.ts'),
     },
   },
   server: {
