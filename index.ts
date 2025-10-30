@@ -1,4 +1,4 @@
-import PdfJsViewer from './src/PdfJsViewer.vue'
+import PdfViewerComponent from './src/PdfViewerComponent.vue'
 
-export default PdfJsViewer
-export { PdfJsViewer }
+export default PdfViewerComponent
+export { PdfViewerComponent }

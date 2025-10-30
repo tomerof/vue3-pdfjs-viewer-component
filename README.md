@@ -16,9 +16,9 @@ Usage example:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import PdfJsViewer from 'vue3-pdf-viewer-component'
+import PdfJsViewerComponent from 'vue3-pdf-viewer-component'
 
-const pdfRef = ref<InstanceType<typeof PdfJsViewer> | null>(null)
+const pdfRef = ref<InstanceType<typeof PdfJsViewerComponent> | null>(null)
 
 function openPdf() {
   pdfRef.value?.setPdfSrc('/assets/sample.pdf')
@@ -28,7 +28,7 @@ function openPdf() {
 
 <template>
   <div style="height: 80vh;">
-    <PdfJsViewer
+    <PdfJsViewerComponent
       ref="pdfRef"
       :viewer-id="'main'"
       :pdf-src="null"
@@ -66,7 +66,7 @@ Publish to npm
 - Set the desired package name and version in `package.json`.
 - Ensure you are logged in: `npm login`.
 - Build and publish: `npm run build && npm publish --access public`.
-- Consumers can then `npm i vue3-pdf-viewer-component` and `import PdfJsViewer from 'vue3-pdf-viewer-component'`.
+- Consumers can then `npm i vue3-pdf-viewer-component` and `import PdfJsViewerComponent from 'vue3-pdf-viewer-component'`.
 
 Props mirror the Angular inputs:
 - viewerId, viewerFolder, externalWindow, showSpinner, downloadFileName, openFile, download, startDownload, viewBookmark, print, startPrint, fullScreen, find, zoom, nameddest, pagemode, lastPage, rotatecw, rotateccw, cursor, scroll, spread, locale, useOnlyCssZoom, errorOverride, errorAppend, errorMessage, diagnosticLogs, externalWindowOptions, page, pdfSrc.

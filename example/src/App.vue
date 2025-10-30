@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import PdfJsViewer from 'vue3-pdf-viewer-component'
+import PdfViewerComponent from 'vue3-pdf-viewer-component'
 
-const pdfRef = ref<InstanceType<typeof PdfJsViewer> | null>(null)
+const pdfRef = ref<InstanceType<typeof PdfViewerComponent> | null>(null)
 const sampleUrl = ref('https://mozilla.github.io/pdf.js/web/compressed.tracemonkey-pldi-09.pdf')
 const page = ref<number | undefined>(undefined)
 
@@ -35,7 +35,7 @@ function goTo(n: number) {
     </div>
 
     <div class="viewer">
-      <PdfJsViewer
+      <PdfViewerComponent
         ref="pdfRef"
         :viewer-id="'example'"
         :pdf-src="null"

@@ -8,7 +8,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'index.ts'),
-      name: 'Vue3PdfjsViewer',
+      name: 'Vue3PdfViewerComponent',
       formats: ['es'],
       fileName: (format) => `index.${format}.js`,
     },
